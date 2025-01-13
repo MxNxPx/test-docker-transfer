@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include: ${{ fromJson(env.matrix_values) }}  # Use the parsed matrix directly
+        value: ${{ fromJson(env.matrix_values) }}  # Use the parsed matrix directly
 
     steps:
     - name: Debug Matrix
