@@ -38,12 +38,17 @@ jobs:
         id: set_target_image
         run: |
           source_image="${{ matrix.source_image }}"
-          target_image="${source_image/docker.io/ttl.io}"
+          echo "source_registry=$(echo ${source_image} | cut -d'/' -f1)" >> $GITHUB_ENV
+          echo "target_registry=ttl.io" >> $GITHUB_ENV
+          target_image="${source_image/$source_registry/$target_registry}"
           echo "Target image is: $target_image"
           echo "target_image=$target_image" >> $GITHUB_ENV
+
 
       - name: Call Reusable Workflow for Transfer
         uses: ./.github/actions/transfer-docker-image
         with:
+          source_registry: ${{ env.source_registry }}
           source_image: ${{ matrix.source_image }}
+          target_registry: ${{ env.target_registry }}
           target_image: ${{ env.target_image }}
