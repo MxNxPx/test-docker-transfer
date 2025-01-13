@@ -43,6 +43,10 @@ jobs:
         include: ${{ fromJson(needs.process-image-list.outputs.matrix) }}
 
     steps:
+    - name: Debug Matrix
+      run: |
+        echo "Matrix content: ${{ needs.process-image-list.outputs.matrix }}"
+
     - name: Call Reusable Workflow for Transfer
       uses: ./.github/workflows/transfer-docker-image.yaml
       with:
