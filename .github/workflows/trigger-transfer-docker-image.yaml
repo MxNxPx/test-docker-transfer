@@ -24,8 +24,8 @@ jobs:
       run: |
         echo "Parsing images-list.json..."
         matrix_values=$(zarf tools yq -r '.components[].images[]' containers/zarf.yaml | awk '{print "\"" $0 "\", "}' | tr -d '\n' | sed 's/, $//')
-        echo "Matrix values: $matrix_values"
-        echo "matrix_values=$matrix_values" >> $GITHUB_OUTPUT
+        echo "Matrix values: [$matrix_values]"
+        echo "matrix_values=[$matrix_values]" >> $GITHUB_OUTPUT
 
   transfer-images:
     needs: process-image-list
