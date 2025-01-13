@@ -41,6 +41,7 @@ runs:
         target=$(echo "${{ inputs.target_image }}" | sed "s/\/.*/\/$image_id:1h/")
         echo "tag & push: $target"
         docker tag ${{ inputs.source_image }} $target
+        docker images
         docker push $target
         ## REMOVE LATER ###
 #        docker push ${{ inputs.target_image }}
