@@ -3,7 +3,6 @@ name: Detect Updates and Trigger Transfers
 on:
   push:
     paths:
-      - containers/** # Monitor changes to directory
       - .github/workflows/**
 
 jobs:
@@ -21,27 +20,26 @@ jobs:
       with:
         version: v0.46.0
 
-    - name: Parse Image List
-      id: parse-images
-      run: |
-        echo "Parsing images-list.json..."
-        IMAGE_LIST=$(zarf tools yq -r '.components[].images[]' containers/zarf.yaml)
-        echo "IMAGE_LIST=${IMAGE_LIST//$'\n'/,}]" >> $GITHUB_ENV
-
   transfer-images:
     needs: process-image-list
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        source_image: [ "docker.io/busybox:1.36.0", "docker.io/alpine:3.18.10" ]
-        
-    steps:
-    - name: Debug Matrix
-      run: |
-        echo "Matrix content: ${{ matrix.include }}"
+        source_image:
+          - "docker.io/busybox:1.36.0"
+          - "docker.io/alpine:3.18.10"
 
-    - name: Call Reusable Workflow for Transfer
-      uses: ./.github/workflows/transfer-docker-image.yaml
-      with:
-        source_image: ${{ matrix.source_image }}
-        target_image: ${{ matrix.source_image }}
+    steps:          
+      - name: Set target image from source image
+        id: set_target_image
+        run: |
+          source_image="${{ matrix.source_image }}"
+          target_image="${source_image/docker.io/ttl.io}"
+          echo "Target image is: $target_image"
+          echo "target_image=$target_image" >> $GITHUB_ENV
+
+      - name: Call Reusable Workflow for Transfer
+        uses: ./.github/workflows/transfer-docker-image.yaml
+        with:
+          source_image: ${{ matrix.source_image }}
+          target_image: ${{ env.target_image }}
