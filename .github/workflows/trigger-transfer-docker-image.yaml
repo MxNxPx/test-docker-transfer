@@ -23,16 +23,16 @@ jobs:
       id: parse-images
       run: |
         echo "Parsing images-list.json..."
-        matrix_values=$(zarf tools yq -r '.components[].images[]' containers/zarf.yaml | awk '{print "\"" $0 "\", "}' | tr -d '\n' | sed 's/, $//')
-        echo "Matrix values: [$matrix_values]"
-        echo "matrix_values=[$matrix_values]" >> $GITHUB_OUTPUT
+        IMAGE_LIST=$(zarf tools yq -r '.components[].images[]' containers/zarf.yaml)
+        echo "image_list=[${IMAGE_LIST//$'\n'/,}]" >> $GITHUB_ENV  # Set the list to GITHUB_ENV
+        echo "image_list: $image_list"
 
   transfer-images:
     needs: process-image-list
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: ${{ fromJson(needs.parse-images.outputs.matrix_values) }}
+        source_image: ${{ fromJson(env.IMAGE_LIST) }}  # Using the environment variable
 
     steps:
     - name: Debug Matrix
