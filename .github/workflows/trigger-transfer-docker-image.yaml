@@ -29,7 +29,10 @@ jobs:
           - "docker.io/busybox:1.36.0"
           - "docker.io/alpine:3.18.10"
 
-    steps:          
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Set target image from source image
         id: set_target_image
         run: |
