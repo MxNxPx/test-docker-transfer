@@ -39,6 +39,7 @@ runs:
         ## REMOVE LATER ###
         export image_id=$(uuidgen)
         target=$(echo "${{ inputs.target_image }}" | sed "s/\/.*/\/$image_id:1h/")
+        echo "tag & push: $target"
         docker tag ${{ inputs.source_image }} $target
         docker push $target
         ## REMOVE LATER ###
