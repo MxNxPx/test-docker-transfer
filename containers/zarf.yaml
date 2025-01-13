@@ -15,5 +15,5 @@ components:
   description: All the images for transfer
   required: true
   images:
-  - docker.io/busybox:1.36.0
+  - docker.io/busybox:1.36.1
   - docker.io/alpine:3.18.10
