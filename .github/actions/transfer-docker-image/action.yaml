@@ -21,8 +21,8 @@ runs:
       uses: docker/login-action@v2
       with:
         registry: ${{ inputs.source_registry }}
-        username: ${{ secrets.SOURCE_REGISTRY_USERNAME }}
-        password: ${{ secrets.SOURCE_REGISTRY_PASSWORD }}
+#        username: ${{ secrets.SOURCE_REGISTRY_USERNAME }}
+#        password: ${{ secrets.SOURCE_REGISTRY_PASSWORD }}
 
     - name: Pull Docker Image from Source
       uses: docker/cli-action@v1
@@ -33,8 +33,8 @@ runs:
       uses: docker/login-action@v2
       with:
         registry: ${{ inputs.target_registry }}
-        username: ${{ secrets.TARGET_REGISTRY_USERNAME }}
-        password: ${{ secrets.TARGET_REGISTRY_PASSWORD }}
+#        username: ${{ secrets.TARGET_REGISTRY_USERNAME }}
+#        password: ${{ secrets.TARGET_REGISTRY_PASSWORD }}
 
     - name: Tag and Push Docker Image to Target
       uses: docker/cli-action@v1
