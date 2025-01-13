@@ -49,7 +49,7 @@ jobs:
           echo "target_image=$target_image" >> $GITHUB_ENV
 
 
-      - name: Call Reusable Workflow for Transfer
+      - name: Call local actions workflow for transfer
         uses: ./.github/actions/transfer-docker-image
         with:
           source_registry: ${{ env.source_registry }}
