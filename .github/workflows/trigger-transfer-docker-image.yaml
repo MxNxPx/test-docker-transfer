@@ -9,6 +9,8 @@ on:
 jobs:
   process-image-list:
     runs-on: ubuntu-latest
+    outputs:
+      image_list: ${{ steps.get-images.outputs.image_list }}
 
     steps:
     - name: Checkout Code
