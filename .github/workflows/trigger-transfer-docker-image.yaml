@@ -44,7 +44,8 @@ jobs:
           ### UPDATE THIS ###
           source_image="${{ matrix.source_image }}"
           echo "source_registry=$(echo ${source_image} | cut -d'/' -f1)" >> $GITHUB_ENV
-          target_image="${source_image/$source_registry/$target_registry}"
+          target_image="${source_image/docker.io/ttl.io}"
+#          target_image="${source_image/$source_registry/$target_registry}"
           echo "Target image is: $target_image"
           echo "target_image=$target_image" >> $GITHUB_ENV
 
