@@ -1,3 +1,4 @@
+# Update the image list below to trigger a run
 name: Detect Updates and Trigger Transfers
 
 on:
