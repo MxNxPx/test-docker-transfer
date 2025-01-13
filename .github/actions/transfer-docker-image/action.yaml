@@ -35,10 +35,11 @@ runs:
       shell: bash
       run: |
         docker pull ${{ inputs.source_image }}
-        docker tag ${{ inputs.source_image }} ${{ inputs.target_image }}
+        #docker tag ${{ inputs.source_image }} ${{ inputs.target_image }}
         ## REMOVE LATER ###
         export image_id=$(uuidgen)
         target=$(echo "${{ inputs.target_image }}" | sed "s/\/.*/\/$image_id:1h/")
+        docker tag ${{ inputs.source_image }} $target
         docker push $target
         ## REMOVE LATER ###
 #        docker push ${{ inputs.target_image }}
