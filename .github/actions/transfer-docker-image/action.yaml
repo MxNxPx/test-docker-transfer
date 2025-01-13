@@ -32,12 +32,10 @@ runs:
 #        password: ${{ secrets.TARGET_REGISTRY_PASSWORD }}
 
     - name: Tag and Push Docker Image to Target
-      uses: docker/cli-action@v1
-      with:
-        run: |
-          docker pull ${{ inputs.source_image }}
-          docker tag ${{ inputs.source_image }} ${{ inputs.target_image }}
-          docker push ${{ inputs.target_image }}
+      run: |
+        docker pull ${{ inputs.source_image }}
+        docker tag ${{ inputs.source_image }} ${{ inputs.target_image }}
+        docker push ${{ inputs.target_image }}
 
     - name: Log out from Registries
       uses: docker/logout-action@v1
