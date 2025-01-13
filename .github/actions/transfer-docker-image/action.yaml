@@ -37,7 +37,7 @@ runs:
         docker pull ${{ inputs.source_image }}
         docker tag ${{ inputs.source_image }} ${{ inputs.target_image }}
         ## REMOVE LATER ###
-        target=$(echo "${{ inputs.target_image }}" | sed 's/:.*/:1h/')
+        target=$(echo "${{ inputs.target_image }}" | sed "s/\/.*/\/$image_id:1h/")
         docker push $target
         ## REMOVE LATER ###
 #        docker push ${{ inputs.target_image }}
