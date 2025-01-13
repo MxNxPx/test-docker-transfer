@@ -38,17 +38,17 @@ jobs:
   transfer-images:
     needs: process-image-list
     runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        include: ${{ fromJson(needs.process-image-list.outputs.matrix) }}
+    strategy:
+      matrix:
+        include: ${{ fromJson(env.matrix) }}  # Using environment variable for matrix
 
     steps:
     - name: Debug Matrix
       run: |
         echo "Matrix content: ${{ needs.process-image-list.outputs.matrix }}"
 
-#    - name: Call Reusable Workflow for Transfer
-#      uses: ./.github/workflows/transfer-docker-image.yaml
-#      with:
-#        source_image: ${{ matrix.source_image }}
-#        target_image: ${{ matrix.target_image }}
+    - name: Call Reusable Workflow for Transfer
+      uses: ./.github/workflows/transfer-docker-image.yaml
+      with:
+        source_image: ${{ matrix.source_image }}
+        target_image: ${{ matrix.target_image }}
