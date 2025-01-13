@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - containers/** # Monitor changes to directory
+      - .github/workflows/**
 
 jobs:
   process-image-list:
