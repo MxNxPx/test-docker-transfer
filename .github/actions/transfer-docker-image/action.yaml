@@ -32,6 +32,7 @@ runs:
 #        password: ${{ secrets.TARGET_REGISTRY_PASSWORD }}
 
     - name: Tag and Push Docker Image to Target
+      shell: bash
       run: |
         docker pull ${{ inputs.source_image }}
         docker tag ${{ inputs.source_image }} ${{ inputs.target_image }}
