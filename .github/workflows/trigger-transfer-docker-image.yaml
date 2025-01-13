@@ -29,7 +29,7 @@ jobs:
           SOURCE_IMAGE="$IMAGE"
           TARGET_REGISTRY="ttl.sh"  # Predict target registry
           TARGET_IMAGE="$(echo "$IMAGE" | sed "s|$SOURCE_REGISTRY/|$TARGET_REGISTRY/|g")"
-          MATRIX_JSON="$MATRIX_JSON{\"target\": { \"source_image\":\"$SOURCE_IMAGE\", \"target_image\":\"$TARGET_IMAGE\" } },"
+          MATRIX_JSON="$MATRIX_JSON{\"source_image\":\"$SOURCE_IMAGE\",\"target_image\":\"$TARGET_IMAGE\"},"
         done
         MATRIX_JSON="${MATRIX_JSON%,}]" # Remove trailing comma and close array
         echo "Matrix JSON: $MATRIX_JSON"
@@ -44,12 +44,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: ${{ fromJson(needs.process-image-list.outputs.matrix) }}  # Use job output to populate matrix
+        include: ${{ fromJson(needs.process-image-list.outputs.matrix) }}  # Use the parsed matrix directly
 
     steps:
     - name: Debug Matrix
       run: |
-        echo "Matrix content: ${{ needs.process-image-list.outputs.matrix }}"
+        echo "Matrix content: ${{ matrix.include }}"
 
     - name: Call Reusable Workflow for Transfer
       uses: ./.github/workflows/transfer-docker-image.yaml
