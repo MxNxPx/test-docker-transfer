@@ -1,0 +1,19 @@
+kind: ZarfPackageConfig
+metadata:
+  name: transfer-images
+  description: A Zarf Package that contains all the container images to transfer to ECR
+  version: 0.0.1
+
+variables:
+- name: REGISTRY
+  description: The image registry
+  default: docker.io
+  prompt: true
+
+components:
+- name: images
+  description: All the images for transfer
+  required: true
+  images:
+  - docker.io/busybox:1.36.0
+  - docker.io/alpine:3.18.10
