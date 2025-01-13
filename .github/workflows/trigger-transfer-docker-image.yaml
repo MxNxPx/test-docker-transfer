@@ -1,4 +1,4 @@
-# Update the image list and target registry below to trigger a run
+# Update the image list and target registry below to run workflow
 name: Detect Updates and Trigger Transfers
 
 on:
