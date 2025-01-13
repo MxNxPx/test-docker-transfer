@@ -23,22 +23,16 @@ jobs:
       id: parse-images
       run: |
         echo "Parsing images-list.json..."
-        IMAGE_LIST=$(zarf tools yq -r '.components[].images[]' containers/zarf.yaml)
-        MATRIX_JSON="[ "
-        for IMAGE in $IMAGE_LIST; do
-          SOURCE_IMAGE="$IMAGE"
-          MATRIX_JSON="$MATRIX_JSON{\"source_image\":\"$SOURCE_IMAGE\"},"
-        done
-        MATRIX_JSON="${MATRIX_JSON%,} ]" # Remove trailing comma and close array
-        echo "Matrix JSON: $MATRIX_JSON"
-        echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
+        matrix_values=$(zarf tools yq -r '.components[].images[]' containers/zarf.yaml | tr '\n' ',' | sed 's/,$//')
+        echo "Matrix values: $matrix_values"
+        echo "matrix_values=$matrix_values" >> $GITHUB_OUTPUT
 
   transfer-images:
     needs: process-image-list
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include: ${{ fromJson(needs.process-image-list.outputs.matrix) }}  # Use the parsed matrix directly
+        include: ${{ fromJson(env.matrix_values) }}  # Use the parsed matrix directly
 
     steps:
     - name: Debug Matrix
