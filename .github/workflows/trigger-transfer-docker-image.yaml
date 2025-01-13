@@ -13,6 +13,11 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Install Zarf
+      uses: defenseunicorns/setup-zarf@v1.0.1
+      with:
+        version: v0.46.0
+
     - name: Parse Image List
       id: parse-images
       run: |
