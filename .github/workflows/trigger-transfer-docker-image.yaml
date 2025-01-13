@@ -35,6 +35,10 @@ jobs:
         echo "Matrix JSON: $MATRIX_JSON"
         echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
 
+    - name: Debug Output
+      run: |
+        echo "Matrix Output: ${{ steps.parse-images.outputs.matrix }}"
+
   transfer-images:
     needs: process-image-list
     runs-on: ubuntu-latest
