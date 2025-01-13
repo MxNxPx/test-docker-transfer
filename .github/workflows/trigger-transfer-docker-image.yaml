@@ -42,7 +42,7 @@ jobs:
           echo "target_image=$target_image" >> $GITHUB_ENV
 
       - name: Call Reusable Workflow for Transfer
-        uses: ./.github/actions/transfer-docker-image/action.yaml
+        uses: ./.github/actions/transfer-docker-image
         with:
           source_image: ${{ matrix.source_image }}
           target_image: ${{ env.target_image }}
