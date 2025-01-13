@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include: ${{ fromJson(needs.process-image-list.outputs.matrix) }}  # Use job output to populate matrix
+        target: ${{ fromJson(needs.process-image-list.outputs.matrix) }}  # Use job output to populate matrix
 
     steps:
     - name: Debug Matrix
