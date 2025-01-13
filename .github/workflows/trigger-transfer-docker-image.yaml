@@ -1,4 +1,4 @@
-# Update the image list below to trigger a run
+# Update the image list and target registry below to trigger a run
 name: Detect Updates and Trigger Transfers
 
 on:
@@ -27,9 +27,11 @@ jobs:
     strategy:
       matrix:
         source_image:
+        ### UPDATE THIS
           - "docker.io/busybox:1.36.0"
           - "docker.io/alpine:3.18.10"
-
+        ### UPDATE THIS
+        
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -37,9 +39,11 @@ jobs:
       - name: Set target image from source image
         id: set_target_image
         run: |
+          ### UPDATE THIS
+          echo "target_registry=ttl.io" >> $GITHUB_ENV
+          ### UPDATE THIS
           source_image="${{ matrix.source_image }}"
           echo "source_registry=$(echo ${source_image} | cut -d'/' -f1)" >> $GITHUB_ENV
-          echo "target_registry=ttl.io" >> $GITHUB_ENV
           target_image="${source_image/$source_registry/$target_registry}"
           echo "Target image is: $target_image"
           echo "target_image=$target_image" >> $GITHUB_ENV
