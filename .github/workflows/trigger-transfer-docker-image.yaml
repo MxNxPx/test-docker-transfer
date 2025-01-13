@@ -3,7 +3,7 @@ name: Detect Updates and Trigger Transfers
 on:
   push:
     paths:
-      - containers/images-list.json  # Monitor changes to the single file
+      - containers/** # Monitor changes to directory
 
 jobs:
   process-image-list:
@@ -39,7 +39,7 @@ jobs:
 
     steps:
     - name: Call Reusable Workflow for Transfer
-      uses: ./.github/workflows/transfer-docker-image.yml
+      uses: ./.github/workflows/transfer-docker-image.yaml
       with:
         source_image: ${{ matrix.source_image }}
         target_image: ${{ matrix.target_image }}
