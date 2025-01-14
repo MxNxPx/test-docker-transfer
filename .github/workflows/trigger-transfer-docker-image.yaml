@@ -25,12 +25,12 @@ jobs:
         id: set_target_image
         run: |
           ### UPDATE THIS ###
-          export TARGET_REGISTRY="$(echo "ttl.sh")"
+          export TARGET_REGISTRY="ttl.sh"
           echo "target_registry=$TARGET_REGISTRY" >> $GITHUB_ENV
           ### UPDATE THIS ###
           export SOURCE_IMAGE="${{ matrix.source_image }}"
           echo "source_image=$SOURCE_IMAGE" >> $GITHUB_ENV
-          export SOURCE_REGISTRY="$(echo ${source_image} | cut -d'/' -f1)"
+          export SOURCE_REGISTRY="$(echo $SOURCE_IMAGE | cut -d'/' -f1)"
           echo "source_registry=$SOURCE_REGISTRY" >> $GITHUB_ENV
           export TARGET_IMAGE="${SOURCE_IMAGE/$SOURCE_REGISTRY/$TARGET_REGISTRY}"
           echo "Target image is: $TARGET_IMAGE"
@@ -39,7 +39,6 @@ jobs:
       - name: Call local actions workflow for transfer
         uses: ./.github/actions/transfer-docker-image
         with:
-#          source_registry: ${{ env.source_registry }}
           source_image: ${{ matrix.source_image }}
           target_registry: ${{ env.target_registry }}
           target_image: ${{ env.target_image }}
