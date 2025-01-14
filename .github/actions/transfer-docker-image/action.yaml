@@ -1,9 +1,6 @@
 name: Transfer Docker Image
 
 inputs:
-  source_registry:
-    required: true
-    type: string
   target_registry:
     required: true
     type: string

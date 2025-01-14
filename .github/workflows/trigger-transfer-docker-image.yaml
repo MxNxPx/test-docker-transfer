@@ -7,22 +7,7 @@ on:
       - .github/workflows/**
 
 jobs:
-  process-image-list:
-    runs-on: ubuntu-latest
-    outputs:
-      image_list: ${{ steps.parse-images.outputs.image_list }}
-
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Install Zarf
-      uses: defenseunicorns/setup-zarf@v1.0.1
-      with:
-        version: v0.46.0
-
   transfer-images:
-    needs: process-image-list
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -40,21 +25,21 @@ jobs:
         id: set_target_image
         run: |
           ### UPDATE THIS ###
-          echo "target_registry=ttl.io" >> $GITHUB_ENV
+          export TARGET_REGISTRY="$(echo "ttl.sh")"
+          echo "target_registry=$TARGET_REGISTRY" >> $GITHUB_ENV
           ### UPDATE THIS ###
-          source_image="${{ matrix.source_image }}"
-          echo "source_registry=$(echo ${source_image} | cut -d'/' -f1)" >> $GITHUB_ENV
-          # FIX HARD CODED REFS
-          target_image="${source_image/docker.io/ttl.io}"
-          #target_image="${source_image/$source_registry/$target_registry}"
-          echo "Target image is: $target_image"
-          echo "target_image=$target_image" >> $GITHUB_ENV
-
+          export SOURCE_IMAGE="${{ matrix.source_image }}"
+          echo "source_image=$SOURCE_IMAGE" >> $GITHUB_ENV
+          export SOURCE_REGISTRY="$(echo ${source_image} | cut -d'/' -f1)"
+          echo "source_registry=$SOURCE_REGISTRY" >> $GITHUB_ENV
+          export TARGET_IMAGE="${SOURCE_IMAGE/$SOURCE_REGISTRY/$TARGET_REGISTRY}"
+          echo "Target image is: $TARGET_IMAGE"
+          echo "target_image=$TARGET_IMAGE" >> $GITHUB_ENV
 
       - name: Call local actions workflow for transfer
         uses: ./.github/actions/transfer-docker-image
         with:
-          source_registry: ${{ env.source_registry }}
+#          source_registry: ${{ env.source_registry }}
           source_image: ${{ matrix.source_image }}
           target_registry: ${{ env.target_registry }}
           target_image: ${{ env.target_image }}
